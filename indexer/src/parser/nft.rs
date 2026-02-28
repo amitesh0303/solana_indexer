@@ -55,7 +55,7 @@ impl Parser for NftParser {
                         block_time: tx.block_time,
                         mint: ix.accounts.get(1).cloned().unwrap_or_default(),
                         from: String::new(),
-                        to: ix.accounts.get(0).cloned().unwrap_or_default(),
+                        to: ix.accounts.first().cloned().unwrap_or_default(),
                     }));
                 }
                 _ => {}

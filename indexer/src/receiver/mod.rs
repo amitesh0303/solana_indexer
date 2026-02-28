@@ -57,6 +57,7 @@ pub struct BlockUpdate {
 
 /// Tagged union of all update types from the stream.
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum Update {
     Account(AccountUpdate),
     Transaction(TransactionUpdate),
@@ -66,6 +67,7 @@ pub enum Update {
 /// Connects to a Yellowstone gRPC endpoint and emits `Update` items.
 pub struct YellowstoneReceiver {
     endpoint: String,
+    #[allow(dead_code)]
     token: Option<String>,
 }
 
