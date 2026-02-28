@@ -61,7 +61,7 @@ impl Indexer {
         );
 
         // Spawn writer task
-        let write_task = tokio::spawn(writer.run(rx));
+        let _write_task = tokio::spawn(writer.run(rx));
 
         // Connect to Yellowstone gRPC
         let mut receiver = YellowstoneReceiver::new(

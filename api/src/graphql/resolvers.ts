@@ -76,10 +76,6 @@ export const resolvers = {
     ) {
       const limit = Math.min(args.first ?? 20, 100);
 
-      const whereAccount = args.account
-        ? prisma.$queryRaw`AND ${args.account} = ANY(t.accounts)`
-        : prisma.$queryRaw``;
-
       const rows = await prisma.$queryRaw<RawTx[]>`
         SELECT t.signature, t.slot, t.block_time, t.success, t.fee, t.compute_units,
                t.accounts, t.log_messages,

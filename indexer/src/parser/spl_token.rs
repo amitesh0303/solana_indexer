@@ -49,7 +49,7 @@ impl Parser for SplTokenParser {
                         signature: tx.signature.clone(),
                         block_time: tx.block_time,
                         mint: ix.accounts.get(2).cloned().unwrap_or_default(),
-                        source: ix.accounts.get(0).cloned().unwrap_or_default(),
+                        source: ix.accounts.first().cloned().unwrap_or_default(),
                         destination: ix.accounts.get(1).cloned().unwrap_or_default(),
                         amount,
                         decimals: 0, // decimals not in Transfer, only in TransferChecked
@@ -67,7 +67,7 @@ impl Parser for SplTokenParser {
                         signature: tx.signature.clone(),
                         block_time: tx.block_time,
                         mint: ix.accounts.get(1).cloned().unwrap_or_default(),
-                        source: ix.accounts.get(0).cloned().unwrap_or_default(),
+                        source: ix.accounts.first().cloned().unwrap_or_default(),
                         destination: ix.accounts.get(2).cloned().unwrap_or_default(),
                         amount,
                         decimals,

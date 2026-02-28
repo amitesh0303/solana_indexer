@@ -56,7 +56,11 @@ pub struct BlockUpdate {
 }
 
 /// Tagged union of all update types from the stream.
+///
+/// Variants are not constructed in the current placeholder receiver implementation
+/// but will be used when wired to the real Yellowstone gRPC client.
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum Update {
     Account(AccountUpdate),
     Transaction(TransactionUpdate),
@@ -66,6 +70,8 @@ pub enum Update {
 /// Connects to a Yellowstone gRPC endpoint and emits `Update` items.
 pub struct YellowstoneReceiver {
     endpoint: String,
+    /// Bearer token for gRPC authentication; used in production Yellowstone connections.
+    #[allow(dead_code)]
     token: Option<String>,
 }
 
