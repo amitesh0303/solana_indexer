@@ -12,9 +12,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/server": "^4.11.0",
+    "@apollo/server": "^4.13.0",
     "@prisma/client": "^5.20.0",
-    "axios": "^1.7.7",
+    "axios": "^1.13.5",
     "bullmq": "^5.13.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
