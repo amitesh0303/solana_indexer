@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  email       String?   @unique
+  name        String?
+  avatarUrl   String?   @map("avatar_url")
+  provider    String    @default("email")
+  providerId  String?   @map("provider_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  apiKeys     ApiKey[]
+  webhooks    Webhook[]
+
+  @@map("users")
+}
+
+model ApiKey {
+  id           String        @id @default(uuid())
+  userId       String        @map("user_id")
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  keyHash      String        @unique @map("key_hash")
+  keyPrefix    String        @map("key_prefix")
+  rateLimit    Int           @default(1000) @map("rate_limit")
+  tier         String        @default("free")
+  revoked      Boolean       @default(false)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  lastUsedAt   DateTime?     @map("last_used_at")
+  usageMetrics UsageMetric[]
+
+  @@index([userId])
+  @@index([keyHash])
+  @@map("api_keys")
+}
+
+model UsageMetric {
+  id       BigInt   @id @default(autoincrement())
+  apiKeyId String   @map("api_key_id")
+  apiKey   ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  period   DateTime @db.Date
+  requests BigInt   @default(0)
+  errors   BigInt   @default(0)
+
+  @@unique([apiKeyId, period])
+  @@index([apiKeyId])
+  @@map("usage_metrics")
+}
+
+model Webhook {
+  id         String            @id @default(uuid())
+  userId     String            @map("user_id")
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  url        String
+  event      String
+  filters    Json              @default("{}")
+  secret     String?
+  active     Boolean           @default(true)
+  createdAt  DateTime          @default(now()) @map("created_at")
+  deliveries WebhookDelivery[]
+
+  @@index([userId])
+  @@index([event])
+  @@map("webhooks")
+}
+
+model WebhookDelivery {
+  id        String   @id @default(uuid())
+  webhookId String   @map("webhook_id")
+  webhook   Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  status    String
+  payload   Json?
+  error     String?
+  attempt   Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([webhookId])
+  @@map("webhook_deliveries")
+}

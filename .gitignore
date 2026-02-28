@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts
+dist/
+.next/
+**/dist/
+target/
+
+# Environment
+.env
+.env.local
+.env.production
+**/.env
+**/.env.local
+
+# Rust
+indexer/target/
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
